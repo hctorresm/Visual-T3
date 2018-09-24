@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+body { font: 14px Arial;}
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+body {
+    background:white;
+
+}
+
+
+</style>
+<body>
+
+<!-- load the d3.js library -->    
+<script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@4.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@3.0.0-rc6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@3.19.2"></script>
+
+
+<h1> Evolución de la exportación de Café en distintos departamentos de Colombia</h1>
+
+<ul>
+<li>Universidad de los Andes</li>
+<li>Maestría en ingeniería de información </li>
+<li>Visual analytics</li>
+<li>Autor: Harry Cristhian Torres Moreno </li>
+<li>Código: 201727422 </li>
+</ul>
+<hr/>
+
+
+
+
+<ol>
+    <li> Exportación de café medido en Toneladas </li>
+    <li> Exportación de café medido en millones de pesos </li>
+    <li> Correlación toneladas vs valor en miles de pesos </li>
+</ol>
+
+<h2> Introducción</h2>
+<p>El presente documento buscar presentar cómo ha variado las toneladas y el valor en miles de pesos de las exportaciones de café en los departamentos de Antioquia, Caldas, Bogotá, Risaralda, Huila, Quindio y Tolima desde el año 2010 hasta el año 2018, mediante el uso de visual analytics. En la primera sección se estudia la variable Tonelada, donde a partir de a partir de gráficos de áreas y líneas (series de tiempo) se busca encontrar una caracterización asociada a la tendencia, de manea análoga, se estudia la variable valor en miles de pesos, finalmente se costruye una visualización que muestra si existe o no una correlación entre la variable Tonelada y valor en miles de pesos. </p>
+
+
+
+<h2> Exportación de Café  medido en Toneladas</h2>
+
+
+
+<p> A continuación se presenta cómo ha venido evolucionando el total de toneladas de Café que exporta los departamentos de Antioquia, Caldas, Bogota, Risaralda, Huila, Quindio y Tolima desde el año 2010 hasta el año 2018 mediante un gráfico de áreas, así mismo, se presenta la caracterización de este gráfico en función del framework de Tamara.</p>
+<h3> Caracterización What, Why How </h3>
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, los ítems corresponde a las exportaciones de café en un determinado departamento y en un determinado periodo de tiempo y los atributos corresponden al departamento, fecha de exportación y toneladas </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Departamento:</strong> Corresponde al departamento de donde surge la exportación de Café, esta variable es categórica.
+                    <li> <strong>Toneladas: </strong> Correponde a las toneladas de cafe que se exportaron, esta variable es ordenada, cuantitativa y secuencial.
+                    <li><strong> Fecha: </strong> Corresponde a la fecha en la cual se realizó las exportaciones, esta variable es ordenada, cuantitativa y cíclica. 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Identificar la tendencia que ha venido presentando las exportaciones (medido en toneladas) de Café en los últimos años (Tamara: Identify, trends) </li>
+        </ol>
+    </li>
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>áreas</strong>: Cada área representa el volumen total acumulado (medido en toneladas) que ha exportado los distintos departamentos a través del tiempo </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color:</strong> El área está representada por un color.</li>
+                    <li><strong> Posición eje x: </strong> El atributo fecha se encuentra ubicado sobre el eje x </li>
+                    <li> <strong> Posición eje y: </strong> El atributo Toneladas (valor acumulado) se encuentra ubicado en el eje y</li>
+               </ol>
+        </ol>
+    </li>
+
+</ul>
+
+
+
+<div id="vis"></div> 
+<script type="text/javascript">
+var yourVlSpec={
+
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Volumen medido en Toneladas que se exporta de café",
+  
+  "width": 1210,
+  "height": 40,
+  "data": {
+      "url": "https://raw.githubusercontent.com/hctorresm/Visual-T3/master/exportaciones_cafe_1128.csv"
+  },
+  "mark": "area",
+  "encoding": {
+      "x": {
+          "field": "date",
+          "type": "temporal",
+          "axis": {
+              "title": "Time",
+              "grid": false
+          }
+      },
+      "y": {
+          "field": "Toneladas",
+          "type": "quantitative",
+          "axis": {
+              "title": "Depto",
+              "grid": false
+          }
+      },
+      "color": {
+          "field": "DeptoOrigen",
+          "type": "nominal",
+          "legend": null
+      },
+      "row": {
+          "field": "DeptoOrigen",
+          "type": "nominal",
+          "header": {"title": "DeptoOrigen"}
+      }
+  }
+
+}
+vegaEmbed("#vis", yourVlSpec);
+</script>
+
+
+
+
+<p> Para comparar el volumen medido en Toneladas de exportación de Café entre un departamento y otro, se procede a realizar un gráfico de líneas, todos los departamentos se mostrarán de manera interactiva en un mismo gráfico. A continuación se presenta la caracterización de este gráfico en función del framework de Tamara.</p>
+<h3> Caracterización What, Why How </h3>
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, los ítems corresponde a las exportaciones de café en un determinado departamento y en un determinado periodo de tiempo y los atributos corresponden al departamento, fecha de exportación y la variable toneladas </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Departamento:</strong> Corresponde al departamento de donde surge la exportación de Café, esta variable es categórica.
+                    <li> <strong>Toneladas: </strong> Correponde a las toneladas de cafe que se exportaron, esta variable es ordenada, cuantitativa y secuencial.
+                    <li><strong> Fecha: </strong> Corresponde a la fecha en la cual se realizó las exportaciones, esta variable es ordenada, cuantitativa y cíclica. 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Comparar el volumen de toneladas de café que ha exportado cada departamento en un periodo de tiempo determinado (Tamara: Compare, feature)
+             </li>
+        </ol>
+    </li>
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>Línea</strong>: Cada línea representa las exportaciones de un determinado departamento </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color:</strong> Cada línea que representa las exprtaciones tiene un color que lo representa.</li>
+                    <li><strong> Posición eje x: </strong> El atributo fecha se encuentra ubicado sobre el eje x </li>
+                    <li> <strong> Posición eje y: </strong> El atributo Toneladas se encuentra ubicado en el eje y</li>
+               </ol>
+        </ol>
+        <li> <strong> Interacción: </strong> Al dar click sobre el nombre del departamento, la línea asociada a este "aparecerá" o "desaparecerá", lo anterior con el fin de m¿poder comparar de manera más eficaz.</li>   
+    </li>
+
+</ul>
+
+
+<script>
+ // Set the dimensions of the canvas / graph
+var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 1350 - margin.left - margin.right,
+    height = 250 - margin.top - margin.bottom;
+// Parse the date / time
+var parseDate = d3.timeParse("%b %Y"); 
+// Set the ranges
+
+
+var x = d3.scaleTime().range([0, width]);  ////ok
+var y = d3.scaleLinear().range([height, 0]);  ////ok
+
+// Define the axes
+var xAxis = d3.axisBottom(x).ticks(5);
+var yAxis = d3.axisLeft(y).ticks(5);
+// Define the line
+var priceline = d3.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.Toneladas); });
+    
+// Adds the svg canvas
+var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
+// Get the data
+d3.csv("https://raw.githubusercontent.com/hctorresm/Visual-T3/master/exportaciones_cafe_1128.csv", function(error, data) {
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.Toneladas = +d.Toneladas
+    });
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain([0, (d3.max(data, function(d) { return d.Toneladas;}) )]); 
+
+    
+    // Nest the entries by symbol
+    var dataNest = d3.nest()
+        .key(function(d) {return d.DeptoOrigen;})
+        .entries(data);
+
+
+    var color= d3.scaleOrdinal(d3.schemeCategory10);
+    var legendSpace = width/dataNest.length;
+
+
+    // Loop through each symbol / key
+    dataNest.forEach(function(d,i) {
+        svg.append("path")
+            .attr("class", "line")
+            .style("stroke", function(){
+                return d.color=color(d.key)})
+            .attr("id", 'tag'+d.key.replace(/\s+/g, ''))
+            .attr("d", priceline(d.values));
+    // Add the Legend
+        svg.append("text")                                    // *******
+            .attr("x", (legendSpace/7)+i*legendSpace) // spacing // ****
+            .attr("y", height + (margin.bottom/2)+ 0)         
+            .attr("class", "legend")    // style the legend   
+            .style("fill", function() { // dynamic colours    
+                return d.color = color(d.key); })             
+            .on("click", function(){                     
+                // Determine if current line is visible 
+                var active   = d.active ? false : true,   
+                newOpacity = active ? 0 : 1;             
+                // Hide or show the elements based on the ID
+                d3.select("#tag"+d.key.replace(/\s+/g, '')) 
+                    .transition().duration(100)          
+                    .style("opacity", newOpacity);       
+                // Update whether or not the elements are active
+                d.active = active;                       
+                })                                       
+            .text(d.key);                                     
+
+
+    });
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+});
+   
+
+</script> 
+
+
+
+<h2> Exportación de Café  en miles de pesos</h2>
+
+
+<p> A continuación se presenta cómo ha venido evolucionando el valor en miles de pesos correspondiente a las exportaciones de café en los departamentos de Antioquia, Caldas, Bogota, Risaralda, Huila, Quindio y Tolima desde el año 2010 hasta el año 2018 mediante un gráfico de áreas. Así mismo, se presenta la caracterización de este gráfico en función del framework de Tamara.</p>
+<h3> Caracterización What, Why How </h3>
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, los ítems corresponde a las exportaciones de café en un determinado departamento y en un determinado periodo de tiempo y los atributos corresponden al departamento, fecha de exportación y la variable miles de pesos. </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Departamento:</strong> Corresponde al departamento de donde surge la exportación de Café, esta variable es categórica.
+                    <li> <strong>Valor miles de pesos: </strong> Correponde al valor en miles de pesos de las exportaciones de café, esta variable es ordenada, cuantitativa y secuencial.
+                    <li><strong> Fecha: </strong> Corresponde a la fecha en la cual se realizó las exportaciones, esta variable es ordenada, cuantitativa y cíclica. 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Identificar la tendencia que ha venido presentando el valor medido en miles de pesos correspondente a las exportaciones de Café en los últimos años (Tamara: Identify, trends) </li>
+        </ol>
+    </li>
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>áreas</strong>: Cada área representa el valor total acumulado medido en miles de pesos correspondiente a las exportaciones de café a través del tiempo </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color:</strong> El área está representada por un color.</li>
+                    <li><strong> Posición eje x: </strong> El atributo fecha se encuentra ubicado sobre el eje x </li>
+                    <li> <strong> Posición eje y: </strong> El atributo valor en miles de pesos (valor acumulado) se encuentra ubicado en el eje y</li>
+               </ol>
+        </ol>
+    </li>
+
+</ul>
+
+
+
+<div id="vis2"></div> 
+<script type="text/javascript">
+var yourVlSpec2={
+
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Valor total en exportación de café",
+  
+  "width": 1210,
+  "height": 40,
+  "data": {
+      "url": "https://raw.githubusercontent.com/hctorresm/Visual-T3/master/export_cafe_1235.csv"
+  },
+  "mark": "area",
+  "encoding": {
+      "x": {
+          "field": "date",
+          "type": "temporal",
+          "axis": {
+              "title": "Time",
+              "grid": false
+          }
+      },
+      "y": {
+          "field": "ValorMilespesos",
+          "type": "quantitative",
+          "axis": {
+              "title": "Depto",
+              "grid": false
+          }
+      },
+      "color": {
+          "field": "DeptoOrigen",
+          "type": "nominal",
+          "legend": null
+      },
+      "row": {
+          "field": "DeptoOrigen",
+          "type": "nominal",
+          "header": {"title": "DeptoOrigen"}
+      }
+  }
+
+}
+vegaEmbed("#vis2", yourVlSpec2);
+
+</script>
+
+
+<p> Para comparar la variable valor en miles de pesos entre un departamento y otro, se procede a realizar un gráfico de líneas, todos los departamentos se mostrarán de manera interactiva en un mismo gráfico. A continuación se presenta la caracterización del gráfico propuesto en función del framework de Tamara.</p>
+<h3> Caracterización What, Why How </h3>
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, los ítems corresponde a las exportaciones de café en un determinado departamento y en un determinado periodo de tiempo y los atributos corresponden al departamento, fecha de exportación y valor en miles de pesos </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Departamento:</strong> Corresponde al departamento de donde surge la exportación de Café, esta variable es categórica.
+                    <li> <strong>Valor: </strong> Correponde al valor en miles de pesosde las exportaciones de cafe, esta variable es ordenada, cuantitativa y secuencia.
+                    <li><strong> Fecha: </strong> Corresponde a la fecha en la cual se realizó las exportaciones, esta variable es ordenada, cuantitativa y cíclica. 
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Comparar el valor en miles de pesos que ha exportado cada departamento en un periodo de tiempo determinado (Tamara: Compare, feature)</li>
+        </ol>
+    </li>
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>Línea</strong>: Cada línea representa las exportaciones de un determinado departamento </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color:</strong> Cada línea que representa las exprtaciones tiene un color que lo representa.</li>
+                    <li><strong> Posición eje x: </strong> El atributo fecha se encuentra ubicado sobre el eje x </li>
+                    <li> <strong> Posición eje y: </strong> El atributo Toneladas se encuentra ubicado en el eje y</li>
+               </ol>
+        </ol>
+     <li> <strong> Interacción: </strong> Al dar click sobre el nombre del departamento, la línea asociada a este "aparecerá" o "desaparecerá", lo anterior con el fin de m¿poder comparar de manera más eficaz.</li>   
+    </li>
+
+</ul>
+
+<script>
+ // Set the dimensions of the canvas / graph
+var margin2 = {top: 30, right: 20, bottom: 30, left: 50},
+    width2 = 1350 - margin2.left - margin2.right,
+    height2 = 250 - margin2.top - margin2.bottom;
+// Parse the date / time
+var parseDate2 = d3.timeParse("%b %Y"); 
+// Set the ranges
+
+var x2 = d3.scaleTime().range([0, width2]);  ////ok
+var y2 = d3.scaleLinear().range([height2, 0]);  ////ok
+
+// Define the axes
+var xAxis2 = d3.axisBottom(x2).ticks(5);
+var yAxis2 = d3.axisLeft(y2).ticks(5);
+// Define the line
+var priceline2 = d3.line()
+    .x(function(d) { return x2(d.date); })
+    .y(function(d) { return y2(d.ValorMilespesos); });
+    
+// Adds the svg canvas
+var svg2 = d3.select("body")
+    .append("svg")
+        .attr("width", width2 + margin2.left + margin2.right)
+        .attr("height", height2 + margin2.top + margin2.bottom)
+    .append("g")
+        .attr("transform", 
+              "translate(" + margin2.left + "," + margin2.top + ")");
+// Get the data
+d3.csv("https://raw.githubusercontent.com/hctorresm/Visual-T3/master/export_cafe_1235.csv", function(error, data) {
+    data.forEach(function(d) {
+        d.date = parseDate2(d.date);
+        d.ValorMilespesos = +d.ValorMilespesos
+    });
+    // Scale the range of the data
+    x2.domain(d3.extent(data, function(d) { return d.date; }));
+    y2.domain([0, (d3.max(data, function(d) { return d.ValorMilespesos;}) )]); 
+
+    
+    // Nest the entries by symbol
+    var dataNest2 = d3.nest()
+        .key(function(d) {return d.DeptoOrigen;})
+        .entries(data);
+
+
+    var color2= d3.scaleOrdinal(d3.schemeCategory10);
+    var legendSpace2 = width2/dataNest2.length;
+
+
+    // Loop through each symbol / key
+    dataNest2.forEach(function(d,i) {
+        svg2.append("path")
+            .attr("class", "line")
+            .style("stroke", function(){
+                return d.color=color2(d.key)})
+            .attr("id", 'tag2'+d.key.replace(/\s+/g, ''))
+            .attr("d", priceline2(d.values));
+    // Add the Legend
+        svg2.append("text")                                    // *******
+            .attr("x", (legendSpace2/7)+i*legendSpace2) // spacing // ****
+            .attr("y", height2 + (margin2.bottom/2)+ 0)         
+            .attr("class", "legend")    // style the legend   
+            .style("fill", function() { // dynamic colours    
+                return d.color = color2(d.key); })             
+            .on("click", function(){                     
+                // Determine if current line is visible 
+                var active2   = d.active2 ? false : true,   
+                newOpacity2 = active2 ? 0 : 1;             
+                // Hide or show the elements based on the ID
+                d3.select("#tag2"+d.key.replace(/\s+/g, '')) 
+                    .transition().duration(100)          
+                    .style("opacity", newOpacity2);       
+                // Update whether or not the elements are active
+                d.active2 = active2;                       
+                })                                       
+            .text(d.key);                                     
+
+
+    });
+    // Add the X Axis
+    svg2.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height2 + ")")
+        .call(xAxis2);
+    // Add the Y Axis
+    svg2.append("g")
+        .attr("class", "y axis")
+        .call(yAxis2);
+});   
+
+</script>
+
+<h2> Correlación Toneladas y valores en miles de pesos</h2>
+
+
+<p> El siguiente gráfico muestra si existe una correlación entre las variables toneladas y valores en miles de pesos, así mismo, se presenta la caracterización de este gráfico en función del framework de Tamara.</p>
+
+<h3> Caracterización What, Why How </h3>
+<ul>
+    <li> <strong>What</strong> 
+        <ul> 
+            <li> <strong>Tipo de conjunto de datos: </strong> Tabla, los ítems corresponde a las exportaciones de café en un determinado departamento y en un determinado periodo de tiempo y los atributos corresponden al departamento, fecha de exportación y toneladas </li>
+            <li> <strong> Atributos </strong> Los atributos son:
+                <ol> 
+                    <li> <strong>Departamento:</strong> Corresponde al departamento de donde surge la exportación de Café, esta variable es categórica.
+                    <li> <strong>Valor miles de pesos: </strong> Correponde al valor en miles de pesos de las exportaciones de café, esta variable es ordenada, cuantitativa y secuencial.
+                    <li><strong> Valor Tonelada </strong> Corresponde al valor medido en Toneladas de las exportaciones de café, esta variable es ordenada, cuantitativa y secuencial.
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li> <strong> Why </strong>
+        <ol>
+            <li> <strong>Tarea 1: </strong> Identificar si existe una correlación entre las toneladas de café y el valor en miles de pesos correspondiente a las exportaciones de los últimos años en distintos municipios. (Tamara: Identify, correlation) </li>
+        </ol>
+    </li>
+
+    <li><strong>How </strong>
+        <ol>
+            <li><strong>Marcas: </strong></li>
+                 <ol>
+                  <li><strong>Puntos</strong>: Cada punto representa una exportación </li>
+                 </ol>
+            <li> <strong>Canales:</strong> 
+                <ol>
+                    <li><strong>Color:</strong> Cada punto tiene un color, este permite identificar a qué departamento corresponde la exportación</li>
+                    <li><strong> Posición eje x: </strong> El atributo Tonelada estará en el eje x </li>
+                    <li> <strong> Posición eje y: </strong> El atributo valor en miles de pesos (valor acumulado) se encuentra ubicado en el eje y, así mismo, la posición en el eje <strong>x</strong> y en el eje <strong>y</strong> permitirá dar una ubicación espacial a cada punto.</li>
+               </ol>
+        </ol>
+    </li>
+
+</ul>
+
+
+
+<div id="vis3"></div> 
+<script type="text/javascript">
+var yourVlSpec3={
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "https://raw.githubusercontent.com/hctorresm/Visual-T3/master/exportacion_cafe_927.json"},
+    "width": 600,
+  "height": 600,
+  "transform": [{
+    "calculate": "datum.DeptoOrigen[0]",
+    "as": "OriginInitial"
+  }],
+  "mark": "text",
+  "encoding": {
+    "x": {"field": "Toneladas", "type": "quantitative"},
+    "y": {"field": "ValorMilespesos", "type": "quantitative"},
+    "color": {"field": "DeptoOrigen", "type": "nominal"},
+    "text": {"field": "OriginInitial", "type": "nominal"}
+  }
+}
+vegaEmbed("#vis3", yourVlSpec3);
+</script>
+
+<p> Analizando el gráfico anterior, se puede observar que efectivamente existe una correlación lineal entre las variables Toneladas y valor en miles de pesos correspondiente a las exportaciones de café en los departamentos de Antioquia, Bogotá, Caldas, Huila, Quindio, Risaralda y Tolima </p>
+
+
+
+</body>
+</html>
+
+
